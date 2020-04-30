@@ -53,7 +53,6 @@ describe('object expression', () => {
     });
 });
 
-
 describe('non listed keys throw an error', () => {
     it('traverse', function() {
         const tree = {
@@ -225,6 +224,43 @@ describe('inherit Visitor', function() {
         visitor.visit(tree);
 
         expect(visitor.log).to.deep.equal([ 'decl', 'a', 'rest' ]);
+    });
+
+    it('`visit` handles `null`', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visit(null);
+
+        expect(visitor.log).to.be.empty;
+    });
+
+    // `null` should not get to `visitChildren` through `visit`
+    it('`visitChildren` handles `null`', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren(null);
+
+        expect(visitor.log).to.be.empty;
     });
 
     it('customize behavior', function() {
