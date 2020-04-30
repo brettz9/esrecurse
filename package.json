@@ -4,6 +4,7 @@
   "homepage": "https://github.com/estools/esrecurse",
   "bugs": "https://github.com/estools/esrecurse/issues",
   "main": "esrecurse.js",
+  "module": "esrecurse.js",
   "version": "4.2.1",
   "engines": {
     "node": ">=4.0"
